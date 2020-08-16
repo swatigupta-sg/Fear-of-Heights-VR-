@@ -1,0 +1,36 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerCtrl : MonoBehaviour
+{
+    public float speed= 3f;
+    private float gravity= -9.81f;
+    public float jumpheight = 3f;
+    Vector3 velocity;
+    private CharacterController controller;    
+    public bool canJump;
+
+    void Start()
+    {
+       controller = GetComponent<CharacterController>(); 
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(Input.GetButton("Fire1")){
+            PlayerMovement();
+        } 
+    }
+    void PlayerMovement(){
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+        Vector3 move = transform.forward * 1;
+        // change velocity direction to the direction in which the character is seeing
+        move = Camera.main.transform.TransformDirection(move);
+        controller.Move(move * speed * Time.deltaTime);
+        velocity.y += gravity * Time.deltaTime ;
+        controller.Move(velocity * Time.deltaTime);
+    }
+}
